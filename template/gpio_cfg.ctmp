@@ -1,0 +1,103 @@
+// Copyright (c) 2023 Ziga Miklosic
+// All Rights Reserved
+////////////////////////////////////////////////////////////////////////////////
+/**
+*@file      gpio_cfg.c
+*@brief     Configuration for GPIO LL Driver based on STM32 HAL library
+*@author    Ziga Miklosic
+*@email     ziga.miklosic@gmail.si
+*@date      21.04.2023
+*@version   V0.1.0
+*/
+////////////////////////////////////////////////////////////////////////////////
+/*!
+* @addtogroup GPIO Configuration
+* @{ <!-- BEGIN GROUP -->
+*/
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+// Includes
+////////////////////////////////////////////////////////////////////////////////
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+#include "gpio/src/gpio.h"
+#include "gpio_cfg.h"
+
+// USER INCLUDE BEGIN...
+
+#include "config/proj_cfg.h"
+#include "config/pin_mapper.h"
+
+// USER INCLUDE END...
+
+////////////////////////////////////////////////////////////////////////////////
+// Definitions
+////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Variables
+////////////////////////////////////////////////////////////////////////////////
+
+/**
+ *  GPIO Pin Configuration
+ */
+static const gpio_cfg_t g_gpio_cfg[eGPIO_PIN_NUM_OF] =
+{
+    // USER CODE BEGIN...
+
+    // ===========================================================================================================================================================================
+    //          INPUT pins
+    //
+    //  @note   Do not care for ".init_state" field in input mode!
+    // ============================================================================================================================================================================
+    [eGPIO_KEY_1]       = { .p_port = KEY1__PORT ,      .pin = KEY1__PIN,       .mode = GPIO_MODE_INPUT, .pull = KEY1__PULL,        .speed = GPIO_SPEED_MEDIUM, .init_state = 0U },
+    [eGPIO_KEY_2]       = { .p_port = KEY2__PORT ,      .pin = KEY2__PIN,       .mode = GPIO_MODE_INPUT, .pull = KEY2__PULL,        .speed = GPIO_SPEED_MEDIUM, .init_state = 0U },
+    [eGPIO_KEY_3]       = { .p_port = KEY3__PORT ,      .pin = KEY3__PIN,       .mode = GPIO_MODE_INPUT, .pull = KEY3__PULL,        .speed = GPIO_SPEED_MEDIUM, .init_state = 0U },
+    [eGPIO_KEY_4]       = { .p_port = KEY4__PORT ,      .pin = KEY4__PIN,       .mode = GPIO_MODE_INPUT, .pull = KEY4__PULL,        .speed = GPIO_SPEED_MEDIUM, .init_state = 0U },
+
+    [eGPIO_BLE_STAT]    = { .p_port = BLE_IRQ__PORT ,   .pin = BLE_IRQ__PIN,    .mode = GPIO_MODE_INPUT, .pull = BLE_IRQ__PULL,     .speed = GPIO_SPEED_MEDIUM, .init_state = 0U },
+    [eGPIO_WIFI_STAT]   = { .p_port = WIFI_IRQ__PORT,   .pin = WIFI_IRQ__PIN,   .mode = GPIO_MODE_INPUT, .pull = WIFI_IRQ__PULL,    .speed = GPIO_SPEED_MEDIUM, .init_state = 0U },
+
+
+    // ============================================================================================================================================================================
+    //          OUTPUT pins
+    // ============================================================================================================================================================================
+    [eGPIO_BLE_RST]     = { .p_port = BLE_RST__PORT,    .pin = BLE_RST__PIN,   .mode = GPIO_MODE_OUTPUT_PP, .pull = BLE_RST__PULL,    .speed = GPIO_SPEED_MEDIUM, .init_state = eGPIO_HIGH },
+    [eGPIO_WIFI_RST]    = { .p_port = ESP_RST__PORT,    .pin = ESP_RST__PIN,   .mode = GPIO_MODE_OUTPUT_PP, .pull = ESP_RST__PULL,    .speed = GPIO_SPEED_MEDIUM, .init_state = eGPIO_HIGH },
+
+    [eGPIO_LCD_CD]      = { .p_port = LCD_CD__PORT,     .pin = LCD_CD__PIN,    .mode = GPIO_MODE_OUTPUT_PP, .pull = LCD_CD__PULL,     .speed = GPIO_SPEED_MEDIUM, .init_state = eGPIO_LOW  },
+    [eGPIO_LCD_CS]      = { .p_port = SPI2_CS__PORT,    .pin = SPI2_CS__PIN,   .mode = GPIO_MODE_OUTPUT_PP, .pull = SPI2_CS__PULL,    .speed = GPIO_SPEED_MEDIUM, .init_state = eGPIO_HIGH },
+    [eGPIO_LCD_RST]     = { .p_port = LCD_RST__PORT,    .pin = LCD_RST__PIN,   .mode = GPIO_MODE_OUTPUT_PP, .pull = LCD_RST__PULL,    .speed = GPIO_SPEED_MEDIUM, .init_state = eGPIO_LOW  },
+    [eGPIO_LCD_LED]     = { .p_port = BACKLIGHT__PORT,  .pin = BACKLIGHT__PIN, .mode = GPIO_MODE_OUTPUT_PP, .pull = BACKLIGHT__PULL,  .speed = GPIO_SPEED_MEDIUM, .init_state = eGPIO_LOW  },
+
+    // USER CODE END...
+};
+
+////////////////////////////////////////////////////////////////////////////////
+/**
+* @} <!-- END GROUP -->
+*/
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/**
+*@addtogroup GPIO_CFG_API
+* @{ <!-- BEGIN GROUP -->
+*
+* 	Following function are part of GPIO Configuration API.
+*/
+////////////////////////////////////////////////////////////////////////////////
+const gpio_cfg_t * gpio_cfg_get_cfg(const gpio_pin_t pin)
+{
+    return &g_gpio_cfg[pin];
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/**
+* @} <!-- END GROUP -->
+*/
+////////////////////////////////////////////////////////////////////////////////

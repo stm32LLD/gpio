@@ -1,0 +1,126 @@
+// Copyright (c) 2023 Ziga Miklosic
+// All Rights Reserved
+////////////////////////////////////////////////////////////////////////////////
+/**
+*@file      gpio_cfg.h
+*@brief     Configuration for GPIO LL Driver based on STM32 HAL library
+*@author    Ziga Miklosic
+*@email     ziga.miklosic@gmail.si
+*@date      21.04.2023
+*@version   V0.1.0
+*/
+////////////////////////////////////////////////////////////////////////////////
+/**
+*@addtogroup GPIO_CFG_API
+* @{ <!-- BEGIN GROUP -->
+*
+*/
+////////////////////////////////////////////////////////////////////////////////
+
+#ifndef __GPIO_CFG_H
+#define __GPIO_CFG_H
+
+////////////////////////////////////////////////////////////////////////////////
+// Includes
+////////////////////////////////////////////////////////////////////////////////
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+// USER INCLUDE BEGIN...
+
+#include "stm32l4xx_hal.h"
+#include "config/proj_cfg.h"
+
+// USER INCLUDE END...
+
+////////////////////////////////////////////////////////////////////////////////
+// Definitions
+////////////////////////////////////////////////////////////////////////////////
+
+// USER CODE BEGIN...
+
+/**
+ *  Enable/Disable assertions
+ */
+#define GPIO_CFG_ASSERT_EN                       ( 1 )
+
+// USER CODE END...
+
+// Disable asserts in releases
+#ifndef DEBUG
+    #undef GPIO_CFG_ASSERT_EN
+    #define GPIO_CFG_ASSERT_EN 0
+#endif
+
+/**
+ *  Assert definition
+ */
+#if ( 1 == GPIO_CFG_ASSERT_EN )
+    // USER CODE BEGIN...
+    #define GPIO_ASSERT(x)                       PROJ_CFG_ASSERT(x)
+    // USER CODE END...
+#else
+    #define GPIO_ASSERT(x)                       { ; }
+#endif
+
+/**
+ *  GPIO pins
+ *
+ *  @note   Must start with enumeration of 0!
+ */
+typedef enum
+{
+    // USER CODE BEGIN...
+
+    eGPIO_KEY_1 = 0,    /**<User button 1 */
+    eGPIO_KEY_2,        /**<User button 2 */
+    eGPIO_KEY_3,        /**<User button 3 */
+    eGPIO_KEY_4,        /**<User button 4 */
+
+    eGPIO_BLE_STAT,     /**<BLE module status */
+    eGPIO_BLE_RST,      /**<BLE module reset */
+
+    eGPIO_WIFI_STAT,    /**<WIFI module status */
+    eGPIO_WIFI_RST,     /**<WIFI module reset */
+
+    eGPIO_LCD_CD,       /**<LCD Command/Data pin */
+    eGPIO_LCD_CS,       /**<LCD Chip Select pin */
+    eGPIO_LCD_RST,      /**<LCD Reset pin */
+    eGPIO_LCD_LED,      /**<LCD Backlight */
+
+
+    // Add more here...
+
+
+    // USER CODE END...
+
+    eGPIO_PIN_NUM_OF    /**<Number of all GPIO pins*/
+} gpio_pin_t;
+
+/**
+ *  GPIO configuration structure
+ */
+typedef struct
+{
+    GPIO_TypeDef const *    p_port;         /**<Port */
+    const uint32_t          pin;            /**<Pin */
+    const uint32_t          pull;           /**<Pull device mode */
+    const uint32_t          mode;           /**<Mode */
+    const uint32_t          speed;          /**<Speed */
+    const uint32_t          init_state;     /**<Initial state */
+} gpio_cfg_t;
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Functions
+////////////////////////////////////////////////////////////////////////////////
+const gpio_cfg_t * gpio_cfg_get_cfg(const gpio_pin_t pin);
+
+#endif // __GPIO_CFG_H
+
+////////////////////////////////////////////////////////////////////////////////
+/**
+* @} <!-- END GROUP -->
+*/
+////////////////////////////////////////////////////////////////////////////////
